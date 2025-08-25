@@ -39,6 +39,8 @@
       .btn { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); background:rgba(40,40,50,.55); color:#fff; border:1px solid rgba(255,255,255,.1); font:600 12px system-ui; padding:.55rem .75rem; border-radius: var(--radius); cursor:pointer; min-width:42px; display:inline-flex; align-items:center; justify-content:center; gap:.35rem; transition:background .3s,var(--ease), border-color .3s; touch-action:manipulation; }
       .btn:active { transform:translateY(1px); }
       .btn:hover { background:rgba(65,65,85,.65); }
+  #toolbar.fade-out { opacity:0; pointer-events:none; transition: opacity .5s var(--ease); }
+  #toolbar:not(.fade-out) { opacity:1; transition: opacity .35s var(--ease); }
       #fps { position:absolute; left:.65rem; bottom:.55rem; font:500 11px/1.1 system-ui; background:rgba(0,0,0,.45); padding:.45rem .55rem; border-radius:8px; backdrop-filter:blur(6px); pointer-events:none; opacity:.6; }
       footer { text-align:center; font-size:11px; padding:.35rem 0 .6rem; opacity:.55; }
       @media (orientation: landscape) and (max-height: 520px){ header { display:none; } footer { display:none; } }
@@ -71,7 +73,7 @@
         min-camera-orbit="auto 10deg auto"
         max-camera-orbit="auto 175deg auto"
         field-of-view="35deg"
-        interpolation-decay="120"
+  interpolation-decay="110"
         exposure="0.9"
         environment-intensity="1.1"
         loading="eager"
