@@ -1,5 +1,5 @@
 /* Service Worker for 3D Tarot PWA */
-const VERSION = 'v3'; // mobile performance & centered zoom improvements
+const VERSION = 'v4'; // mobile zoom & scroll interaction fixes
 const CORE_CACHE = `core-${VERSION}`;
 const RUNTIME_CACHE = `runtime-${VERSION}`;
 const CORE_ASSETS = [

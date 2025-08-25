@@ -59,23 +59,15 @@ function showUI(){
 ['pointerdown','pointerup','wheel','touchstart'].forEach(ev => viewer.addEventListener(ev, showUI, { passive:true }));
 scheduleHide();
 
-// Lock zoom focus to model center on mobile (prevents drifting target during pinch)
-let centerLock = isMobile; // only on mobile
-function enforceCenter(){
-  if (centerLock){
-    // Ensure cameraTarget stays at auto (= bounding box center)
-    const target = viewer.getCameraTarget?.();
-    // If user panned (target not near auto center), reset to auto
-    // getCameraTarget returns spherical target? It's a Vector3-like object with x,y,z in meters.
-    // We can't detect difference against 'auto', so simply reassign.
-    viewer.cameraTarget = 'auto auto auto';
-  }
-}
-viewer.addEventListener('camera-change', enforceCenter);
-
-// Fine-tune interpolation for snappier mobile interactions
+// Remove previous center locking (was causing zoom bounce). Instead, rely on natural target.
+// Improve gesture fidelity on mobile: prevent page scroll while interacting inside viewer.
 if (isMobile){
-  viewer.interpolationDecay = 90; // lower = less lingering inertia
+  // Prevent the browser from scrolling/elastic bounce during touch gestures over the model.
+  ['touchmove','wheel'].forEach(ev => viewer.addEventListener(ev, e => { e.preventDefault(); }, { passive:false }));
+  // Slightly lower inertia for mobile for responsiveness
+  viewer.interpolationDecay = 95; // keep some smoothness
+  // Ensure model starts centered; do not continuously override.
+  viewer.cameraTarget = 'auto auto auto';
 }
 
 // Listen for progress (model-viewer fires progress events 0->1)
@@ -88,11 +80,11 @@ viewer.addEventListener('progress', (e) => {
   }
 });
 
-// Reset camera (also restore center lock)
+// Reset camera
 resetBtn.addEventListener('click', () => {
   viewer.cameraOrbit = '0deg 65deg 100%';
   viewer.fieldOfView = '35deg';
-  if (centerLock){
+  if (isMobile){
     viewer.cameraTarget = 'auto auto auto';
   }
 });
